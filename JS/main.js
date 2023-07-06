@@ -1,48 +1,62 @@
-export default class cnavView{
 
-//   navView(navid){
-//    let navhtml=`
-//     <nav class="navbar  navbar-expand-lg bg-primary " >
-//                 <div class="container-fluid ">
-//                   <a class="navbar-brand text-warning fs-5 fw-bolder " href="#">Arabian</a>
-//                   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-//                     <span class="navbar-toggler-icon"></span>
-//                   </button>
-//                   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-//                     <ul class="navbar-nav me-auto mb-2  mb-lg-0 ">
-//                       <li class="nav-item p-2 text-white " id="home-page">Home</li>
-//                       <li class="nav-item p-2 text-white" id="beauty-page">Beauty</li>
-//                       <li class="nav-item p-2 text-white" id="personal-care-page">Personal Care</li>
-//                       <li class="nav-item p-2 text-white" id="mom-baby-page">Mom & Baby</li>
-//                       <li class="nav-item p-2 text-white" id="vitamins-page">Vitamins & Nutrition</li>
-//                       <li class="nav-item p-2 text-white" id="prescriptions-page">Prescriptions</li>
-//                       <li class="nav-item p-2 text-white" id="sign-in-page">Sign In</li>
-//                       <li class="nav-item p-2 text-white" id="about-page" >About</li>
-//                       <!-- <li class="nav-item dropdown">
-//                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-//                           Dropdown
-//                         </a>
-//                         <ul class="dropdown-menu">
-//                           <li><a class="dropdown-item" href="#">Action</a></li>
-//                           <li><a class="dropdown-item" href="#">Another action</a></li>
-//                           <li><hr class="dropdown-divider"></li>
-//                           <li><a class="dropdown-item" href="#">Something else here</a></li>
-//                         </ul>
-//                       </li> -->
-//                       <!-- <li class="nav-item">
-//                         <a class="nav-link disabled">Disabled</a>
-//                       </li> -->
-//                     </ul>
-//                     <form class="d-flex" role="search">
-//                       <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-//                       <button class="btn btn-outline-warning text-white" type="submit">Search</button>
-//                     </form>
-//                   </div>
-//                 </div>
-//               </nav>
-//     `;
-//     document.getElementById(navid).innerHTML=navhtml;
-// }
+var itemsInCart=[];
+var numcart=0;
+export async function logJSONData(catName) {
+    let urldata="https://dummyjson.com/products" + catName ;
+    const response = await fetch(urldata);
+    const jsonData = await response.json();
+    return jsonData.products ;
+  }
+  var apidata=await logJSONData("");
+  console.log(apidata);
+  export async function logJSONDataCat() {
+    const response = await fetch("https://dummyjson.com/products/categories");
+    const jsonDataCat = await response.json();
+    return jsonDataCat;
+  }
+  var apidataCat=await logJSONDataCat();
+
+   
+export function selectAll(x){
+    let m=document.getElementsByClassName(x);
+    for (const i of m){
+    i.checked =true;
+    }
+    }
+export function unselectAll(x){
+    let m=document.getElementsByClassName(x);
+    for (const i of m){
+    i.checked =false;
+}
+}
+export function addtoCartNum(x3){
+    let xyz= itemsInCart.filter((x)=>x.id == x3);
+    if(xyz.length==0){
+      apidata.find((x)=>x.id==x3).qu=1
+       itemsInCart.push (apidata.find((x)=>x.id==x3));
+       console.log(itemsInCart);
+        let  v=Number( document.getElementById('no-in-cart').innerText);
+        document.getElementById('no-in-cart').innerText=  ++v ;
+    }else{
+      apidata.find((x)=>x.id==x3).qu=Number( apidata.find((x)=>x.id==x3).qu)+1
+      itemsInCart.push (apidata.find((x)=>x.id==x3));
+      console.log(itemsInCart);
+       let  v=Number( document.getElementById('no-in-cart').innerText);
+       document.getElementById('no-in-cart').innerText=  ++v ;
+    }
+ }
+
+ 
+
+  
+
+ 
+
+
+
+
+
+export default class cnavView{
 
 aboutView(navid){
   let abouthtml=`
@@ -71,7 +85,6 @@ aboutView(navid){
   `;
   document.getElementById(navid).innerHTML=abouthtml;
 }
-
 homeView(navid){
   let homehtml=`
   <div class="container">
@@ -85,14 +98,6 @@ homeView(navid){
   `;
   document.getElementById(navid).innerHTML=homehtml;
 }
-// footerView(navid){
-//   let footerhtml=`
-//   <div class="container-fluid foot text-bg-dark text-bg-warning text-center">
-//   <h4 class="p-4" >Arabian Pharmacy &copy; 2023</h4>
-// </div>
-//   `;
-//   document.getElementById(navid).innerHTML=footerhtml;
-// }
 categoriesShow(navid,apiData,apiDataCat,pageTitle){
   if (apiData.length>0){
   let {id,title,price,image,category}=apiData;
@@ -135,7 +140,7 @@ categoriesShow(navid,apiData,apiDataCat,pageTitle){
 
     <div class="col-8 shadow  ">  
         <div class="text-center shadow  fs-4 " >
-        <span>Your Cart </span><i class="bi bi-cart4 fs-2 text-primary position-relative d-inline-block"> </i>
+        <span>Your Cart </span><i class="bi bi-cart4 fs-2 text-primary position-relative d-inline-block" id="the-in-cart"> </i>
         <span class="position-absolute top-10 start-10 rounded bg-transparent text-danger fs-5 fw-bolder" id="no-in-cart"> 0</span>  
         </div>
         <div class="products row" id="showAllProductData">
@@ -220,75 +225,12 @@ categoriesShow(navid,apiData,apiDataCat,pageTitle){
 }
 }
 
-  apiFilter(catName,idName){
+apiFilter(catName,idName){
   if (document.getElementById(idName).checked != false){
-    let apidatac=apidata.filter((x)=>x.category==catName);
-
-  // let urldata="https://dummyjson.com/products/category/" + catName ;
-  //   const response = await fetch(urldata);
-  //   const jsonData = await response.json();
-   return  this.selectCategoriesShow('showAllProductData', apidatac)
+   
+ let apidatac=apidata.filter((x)=>x.category==catName);
+  console.log("dc" , apidatac , " -data " , apidata);
+  return  this.selectCategoriesShow('showAllProductData', apidatac)
   }
    }
 }
-
-var itemsInCart=[];
-var numcart=0;
-export async function logJSONData(catName) {
-    let urldata="https://dummyjson.com/products" + catName ;
-    const response = await fetch(urldata);
-    const jsonData = await response.json();
-    return jsonData.products ;
-  }
-  var apidata=await logJSONData("");
-  console.log(apidata);
-  export async function logJSONDataCat() {
-    const response = await fetch("https://dummyjson.com/products/categories");
-    const jsonDataCat = await response.json();
-    return jsonDataCat;
-  }
-  var apidataCat=await logJSONDataCat();
-
-  
-  
-  // let catClick =document.getElementsByClassName('brand-check');
-  // let num2=1
-  // for (const i of apidataCat) {
-  //  let idOfElement ="chck"+num2
-  //  catClick[num2-1].addEventListener('click',()=>apiFilter(i,idOfElement));
-  //  num2++
-  //  }
-  
-export function selectAll(x){
-
-    let m=document.getElementsByClassName(x);
-  
-    for (const i of m){
-        i.checked =true;
-    }
-    }
-export function unselectAll(x){
-    let m=document.getElementsByClassName(x);
-    for (const i of m){
-        i.checked =false;
-}
-}
-
-export function addtoCartNum(x3){
-    let xyz= itemsInCart.filter((x)=>x.id == x3);
-    if(xyz.length==0){
-       itemsInCart.push (apidata.find((x)=>x.id==x3));
-       console.log(itemsInCart);
-        let  v=Number( document.getElementById('no-in-cart').innerText);
-        document.getElementById('no-in-cart').innerText=  ++v ;
-    }
- }
-
- 
-
-  
-
- 
-
-
-

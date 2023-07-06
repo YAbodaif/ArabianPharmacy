@@ -11,6 +11,7 @@ class xxxx  extends cnavView{
 var cnavViewnew =new xxxx;
 document.getElementById('about-page').addEventListener('click',()=>cnavViewnew.aboutView('main-content'));
 document.getElementById('home-page').addEventListener('click',()=>cnavViewnew.homeView('main-content'));
+
 let apidata0=apidata.filter((x)=>x.category==apidataCat[0]);
 document.getElementById('beauty-page').addEventListener('click', () => cnavViewnew.categoriesShow('main-content', apidata0, apidataCat,'Beauty'));
 let apidata1=apidata.filter((x)=>x.category==apidataCat[1]);
@@ -23,6 +24,4 @@ document.getElementById('vitamins-page').addEventListener('click',()=>cnavViewne
   
 
 
-// cnavViewnew.homeView('main-content');
-// cnavViewnew.footerView('main-foot');
 
